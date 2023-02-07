@@ -4,11 +4,9 @@ import model.Account;
 import model.Budget;
 import model.Transaction;
 
-import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
