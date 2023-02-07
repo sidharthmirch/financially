@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents an Account with a balance in dollars, a list of transactions, and a budget
 public class Account {
     private int balance;
     private List<Transaction> transactionList;
@@ -32,6 +33,8 @@ public class Account {
         return budget;
     }
 
+    // MODIFIES: this, budget
+    // EFFECTS: records a transaction, and if its a withdrawal records it to the budget too
     public void recordTransaction(int amount) {
         Transaction transaction = new Transaction(amount);
         transactionList.add(transaction);

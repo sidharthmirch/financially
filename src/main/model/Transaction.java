@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+// Represents a Transaction, that contains the date of transaction, amount, and an optional category
 public class Transaction {
     private int amount;
     private Date date;
@@ -42,6 +43,6 @@ public class Transaction {
     }
 
     public boolean isDeposit() {
-        return (amount >= 0);
+        return (amount > 0);
     }
 }

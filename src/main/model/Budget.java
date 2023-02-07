@@ -1,5 +1,6 @@
 package model;
 
+// Represents a budget, that has a size, remaining in dollars, and an optional name
 public class Budget {
     private String name;
     private int size;
@@ -36,6 +37,8 @@ public class Budget {
         this.size = size;
     }
 
+    // MODIFIES: this
+    // EFFECTS: subtracts the transaction amount from the budget if it is a deposit
     public void recordTransaction(Transaction transaction) {
         if (!transaction.isDeposit()) {
             remaining += transaction.getAmount();

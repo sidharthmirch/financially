@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import static java.lang.Math.abs;
 
+// Console based implementation of the Budget app
 public class BudgetApp {
 
     private Account account;

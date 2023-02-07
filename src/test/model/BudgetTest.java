@@ -32,13 +32,25 @@ public class BudgetTest {
     }
 
     @Test
+    void testSetSize() {
+        b1.setSize(2000);
+        assertEquals(2000, b1.getSize());
+        b1.setSize(1200);
+        assertEquals(1200, b1.getSize());
+        b2.setSize(300);
+        assertEquals(300, b2.getSize());
+        b2.setSize(5000);
+        assertEquals(5000, b2.getSize());
+    }
+
+    @Test
     void testRecordTransaction() {
         b1.recordTransaction(new Transaction(-200));
         assertEquals(1300, b1.getRemaining());
         b2.recordTransaction(new Transaction(-200));
-        assertEquals(1800.0, b2.getRemaining());
+        assertEquals(1800, b2.getRemaining());
         b2.recordTransaction(new Transaction(400));
-        assertEquals(1800.0, b2.getRemaining());
+        assertEquals(1800, b2.getRemaining());
     }
 
 }
