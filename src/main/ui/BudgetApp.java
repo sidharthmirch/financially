@@ -130,14 +130,15 @@ public class BudgetApp {
     // EFFECTS: record a transaction to the account
     private void recordTransaction(boolean deposit) {
         int amount;
-        System.out.printf("+   NEW TRANSACTION   +%n");
-        System.out.printf("%n| Amount = $");
-
         if (deposit) {
+            System.out.printf("+   NEW TRANSACTION   +%n");
+            System.out.printf("%n| Amount = $");
             amount = input.nextInt();
             account.recordTransaction(amount);
             System.out.printf("Your deposit of $%d has been recorded, enter a command to continue: ", amount);
         } else {
+            System.out.printf("+     NEW DEPOSIT     +%n");
+            System.out.printf("%n| Amount = $");
             amount = -input.nextInt();
             account.recordTransaction(amount);
             System.out.printf("Your transaction of $%d has been recorded, enter a command to continue: ", -amount);
@@ -156,17 +157,5 @@ public class BudgetApp {
             i--;
         }
     }
-
-//    private void accountMenu() {
-//        /* TODO: Formatting https://stackoverflow.com/questions/15215326/how-can-i-create-table-using-ascii-in-a-console
-//        *  Make sure you use printf() and not format()
-//        */
-//        System.out.println("YOUR ACCOUNT\n");
-//        System.out.println("------------\n");
-//        System.out.println("| BALANCE | " + account.getBalance() + "\n");
-//        System.out.println("| BUDGET  | " + account.getBudget() + "\n");
-//
-//    }
-
 
 }
