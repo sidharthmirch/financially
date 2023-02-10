@@ -108,8 +108,8 @@ public class BudgetApp {
 
     // EFFECTS: display all user transactions
     private void transactionList() {
-        // TODO: Fix date, currently getting results like: 06-34-2023
-        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+        // TODO: Add stackoverflow citation
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         System.out.printf("+     USER TRANSACTIONS     +%n");
         System.out.printf("+---------------+-----------+%n");
         System.out.printf("| Type | Amount | Date      |%n");
@@ -129,15 +129,18 @@ public class BudgetApp {
     // MODIFIES: this
     // EFFECTS: record a transaction to the account
     private void recordTransaction(boolean deposit) {
+        // TODO: Check if transaction amount > balance
+        // TODO: Maybe split up deposit and transaction functions?
+        //       - Account.recordDeposit(), Account.recordTransaction()
         int amount;
         if (deposit) {
-            System.out.printf("+   NEW TRANSACTION   +%n");
+            System.out.printf("+     NEW DEPOSIT     +%n");
             System.out.printf("%n| Amount = $");
             amount = input.nextInt();
             account.recordTransaction(amount);
             System.out.printf("Your deposit of $%d has been recorded, enter a command to continue: ", amount);
         } else {
-            System.out.printf("+     NEW DEPOSIT     +%n");
+            System.out.printf("+   NEW TRANSACTION   +%n");
             System.out.printf("%n| Amount = $");
             amount = -input.nextInt();
             account.recordTransaction(amount);
