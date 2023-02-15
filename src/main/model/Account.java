@@ -52,6 +52,7 @@ public class Account {
         balance += transaction.getAmount();
     }
 
+    // EFFECTS: returns summation of all transactions that are not deposits
     public int getSpending() {
         int spending = 0;
         for (Transaction t: transactionList) {
