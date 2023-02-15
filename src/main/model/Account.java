@@ -10,13 +10,13 @@ public class Account {
     private Budget budget;
 
     public Account(int openingBalance) {
-        transactionList = new ArrayList<Transaction>();
+        transactionList = new ArrayList<>();
         budget = new Budget(openingBalance / 2);
         balance = openingBalance;
     }
 
     public Account() {
-        transactionList = new ArrayList<Transaction>();
+        transactionList = new ArrayList<>();
         budget = new Budget(0);
         balance = 0;
     }
@@ -33,14 +33,32 @@ public class Account {
         return budget;
     }
 
-    // MODIFIES: this, budget
-    // EFFECTS: records a transaction, and if its a withdrawal records it to the budget too
-    public void recordTransaction(int amount) {
+    // REQUIRES: amount > 0
+    // MODIFIES: this
+    // EFFECTS: records a deposit to the account, adds to balance
+    public void recordDeposit(int amount) {
         Transaction transaction = new Transaction(amount);
         transactionList.add(transaction);
         balance += transaction.getAmount();
-        if (!transaction.isDeposit()) {
-            budget.recordTransaction(transaction);
+    }
+
+    // REQUIRES: (amount < 0) && (amount < balance)
+    // MODIFIES: this, budget
+    // EFFECTS: records a transaction to the account and records it to the budget too
+    public void recordTransaction(int amount) {
+        Transaction transaction = new Transaction(amount);
+        transactionList.add(transaction);
+        budget.recordTransaction(transaction);
+        balance += transaction.getAmount();
+    }
+
+    public int getSpending() {
+        int spending = 0;
+        for (Transaction t: transactionList) {
+            if (!t.isDeposit()) {
+                spending -= (t.getAmount());
+            }
         }
+        return spending;
     }
 }

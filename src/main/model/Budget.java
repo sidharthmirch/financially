@@ -33,12 +33,15 @@ public class Budget {
         this.name = name;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    // MODIFIES: this
+    // EFFECTS: sets new budget size, and updates remaining
+    public void setSize(int newSize, int currentSpend) {
+        this.size = newSize;
+        this.remaining = newSize - currentSpend;
     }
 
     // MODIFIES: this
-    // EFFECTS: subtracts the transaction amount from the budget if it is a deposit
+    // EFFECTS: subtracts the transaction amount from the remainder of budget
     public void recordTransaction(Transaction transaction) {
         if (!transaction.isDeposit()) {
             remaining += transaction.getAmount();
