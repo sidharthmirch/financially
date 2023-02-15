@@ -42,11 +42,11 @@ public class Account {
         balance += transaction.getAmount();
     }
 
-    // REQUIRES: (amount < 0) && (amount < balance)
+    // REQUIRES: (amount > 0) && (amount < balance)
     // MODIFIES: this, budget
     // EFFECTS: records a transaction to the account and records it to the budget too
     public void recordTransaction(int amount) {
-        Transaction transaction = new Transaction(amount);
+        Transaction transaction = new Transaction(-amount);
         transactionList.add(transaction);
         budget.recordTransaction(transaction);
         balance += transaction.getAmount();

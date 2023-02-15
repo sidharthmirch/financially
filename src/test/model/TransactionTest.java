@@ -13,18 +13,20 @@ public class TransactionTest {
     private Transaction t3;
     private Date date = new Date();
 
-    // TODO: setAmount() setCategory()
 
     @BeforeEach
     void runBefore() {
         t1 = new Transaction(400, date);
         t2 = new Transaction(-200, date);
+        t3 = new Transaction(500);
     }
 
     @Test
-    void constructorTest() {
+    void testConstructor() {
         assertEquals(400.0, t1.getAmount());
         assertEquals(-200.0, t2.getAmount());
+        assertEquals(date, t1.getDate());
+        assertEquals(500, t3.getAmount());
     }
 
     @Test
@@ -39,6 +41,25 @@ public class TransactionTest {
         Date newDate = new Date();
         t1.setDate(newDate);
         assertEquals(newDate, t1.getDate());
-        assertNotEquals(date, t1.getDate());
+        t3.setDate(newDate);
+        assertEquals(newDate, t3.getDate());
+    }
+
+    @Test
+    void testSetAmount() {
+        t1.setAmount(200);
+        assertEquals(200, t1.getAmount());
+        t2.setAmount(500);
+        assertEquals(500, t2.getAmount());
+        t1.setAmount(-300);
+        assertEquals(-300, t1.getAmount());
+    }
+
+    @Test
+    void testSetCategory() {
+        t1.setCategory("A");
+        assertEquals("A", t1.getCategory());
+        t2.setCategory("B");
+        assertEquals("B", t2.getCategory());
     }
 }

@@ -178,7 +178,7 @@ public class BudgetApp {
                 System.out.printf("Your account balance is too low for this transaction!%n");
                 accountMenu();
             }
-            account.recordTransaction(-amount);
+            account.recordTransaction(amount);
             System.out.printf("Your transaction of $%d has been recorded, enter a command to continue: ", -amount);
         }
 

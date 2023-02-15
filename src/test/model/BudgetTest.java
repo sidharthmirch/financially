@@ -31,17 +31,17 @@ public class BudgetTest {
         assertEquals("New name!", b2.getName());
     }
 
-//    @Test
-//    void testSetSize() {
-//        b1.setSize(2000);
-//        assertEquals(2000, b1.getSize());
-//        b1.setSize(1200);
-//        assertEquals(1200, b1.getSize());
-//        b2.setSize(300);
-//        assertEquals(300, b2.getSize());
-//        b2.setSize(5000);
-//        assertEquals(5000, b2.getSize());
-//    }
+    @Test
+    void testSetSize() {
+        b1.setSize(2000, 100);
+        assertEquals(2000, b1.getSize());
+        b1.setSize(1200, 100);
+        assertEquals(1200, b1.getSize());
+        b2.setSize(300, 100);
+        assertEquals(300, b2.getSize());
+        b2.setSize(5000, 100);
+        assertEquals(5000, b2.getSize());
+    }
 
     @Test
     void testRecordTransaction() {
