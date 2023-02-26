@@ -41,7 +41,7 @@ public class BudgetApp {
     // EFFECTS: initializes account and prints welcome message
     private void setup() {
         // openingBalance and budget > 0 for testing
-        account = new Account(5000);
+        account = new Account(5000.0);
         budget = account.getBudget();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -61,10 +61,10 @@ public class BudgetApp {
                 budgetMenu();
                 break;
             case "d":
-                recordTransaction(true);
+                recordDeposit();
                 break;
             case "r":
-                recordTransaction(false);
+                recordTransaction();
                 break;
             case "t":
                 transactionList();
@@ -88,12 +88,12 @@ public class BudgetApp {
 
     // EFFECTS: display user account information
     private void accountMenu() {
-        System.out.printf("+     YOUR ACCOUNT    +%n");
-        System.out.printf("+---------------------+%n");
-        System.out.printf("| Balance |   $%-4d   |%n", account.getBalance());
-        System.out.printf("| Budget  |   $%-4d   |%n", budget.getSize());
-        System.out.printf("|Remaining|   $%-4d   |%n", budget.getRemaining());
-        System.out.printf("+---------------------+%n");
+        System.out.printf("+       YOUR ACCOUNT     +%n");
+        System.out.printf("+------------------------+%n");
+        System.out.printf("| Balance   | $%-2.2f   |%n", account.getBalance());
+        System.out.printf("| Budget    | $%-2.2f   |%n", budget.getSize());
+        System.out.printf("| Remaining | $%-2.2f   |%n", budget.getRemaining());
+        System.out.printf("+------------------------+%n");
     }
 
     // EFFECTS: display user budget information
@@ -103,11 +103,11 @@ public class BudgetApp {
         } else {
             System.out.printf("+     YOUR BUDGET     +%n");
         }
-        System.out.printf("+---------------------+%n");
-        System.out.printf("| Total   |   $%-4d   |%n", budget.getSize());
-        System.out.printf("| Spent   |   $%-4d   |%n", budget.getSize() - account.getSpending());
-        System.out.printf("|Remaining|   $%-4d   |%n", budget.getRemaining());
-        System.out.printf("+---------------------+%n");
+        System.out.printf("+------------------------+%n");
+        System.out.printf("| Total     | $%-2.2f   |%n", budget.getSize());
+        System.out.printf("| Spent     | $%-2.2f   |%n", budget.getSize() - account.getSpending());
+        System.out.printf("| Remaining | $%-2.2f   |%n", budget.getRemaining());
+        System.out.printf("+------------------------+%n");
 
         editBudget();
     }
@@ -129,11 +129,11 @@ public class BudgetApp {
             budget.setName(name);
             System.out.printf("Successfully renamed budget to \"%s\".%n", budget.getName());
         } else if (cmd.equals("s")) {
-            int size;
+            double size;
             System.out.printf("Enter your new budget size: ");
             size = input.nextInt();
             budget.setSize(size, account.getSpending());
-            System.out.printf("Successfully changed budget to $%d.%n", budget.getSize());
+            System.out.printf("Successfully changed budget to $%f.%n", budget.getSize());
         } else {
             commandList();
         }
@@ -142,19 +142,19 @@ public class BudgetApp {
     // EFFECTS: display all user transactions
     private void transactionList() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        System.out.printf("+     USER TRANSACTIONS     +%n");
-        System.out.printf("+---------------+-----------+%n");
-        System.out.printf("| Type | Amount | Date      |%n");
-        System.out.printf("+--------+------------------+%n");
+        System.out.printf("+       USER TRANSACTIONS     +%n");
+        System.out.printf("+-----------------+-----------+%n");
+        System.out.printf("| Type | Amount   | Date      |%n");
+        System.out.printf("+------+----------------------+%n");
 
         // Table generation code inspiration from
         // https://stackoverflow.com/questions/15215326/how-can-i-create-table-using-ascii-in-a-console
         for (Transaction t : account.getTransactionList()) {
-            int amount = t.getAmount();
+            double amount = t.getAmount();
             Date date = t.getDate();
             String formattedDate = dateFormat.format(date);
 
-            System.out.printf("|  %-4s| %-6s | %-6s |%n",
+            System.out.printf("|  %-4s| %-8s | %-6s |%n",
                     (t.isDeposit() ? "D" : "W"), "$" + abs(amount),
                     formattedDate);
         }
@@ -162,32 +162,42 @@ public class BudgetApp {
 
     // MODIFIES: this
     // EFFECTS: record a transaction to the account
-    private void recordTransaction(boolean deposit) {
-        int amount;
-        if (deposit) {
-            System.out.printf("+     NEW DEPOSIT     +%n");
-            System.out.printf("%n| Amount = $");
-            amount = input.nextInt();
-            account.recordDeposit(amount);
-            System.out.printf("Your deposit of $%d has been recorded, enter a command to continue: ", amount);
-        } else {
-            System.out.printf("+   NEW TRANSACTION   +%n");
-            System.out.printf("%n| Amount = $");
-            amount = input.nextInt();
-            if (amount > account.getBalance()) {
-                System.out.printf("Your account balance is too low for this transaction!%n");
-                accountMenu();
-            }
-            account.recordTransaction(amount);
-            System.out.printf("Your transaction of $%d has been recorded, enter a command to continue: ", -amount);
+    private void recordTransaction() {
+        double amount;
+        System.out.printf("+   NEW TRANSACTION   +%n");
+        System.out.printf("%n| Amount = $");
+        amount = input.nextFloat();
+        if (amount > account.getBalance()) {
+            System.out.printf("Your account balance is too low for this transaction!%n");
+            accountMenu();
         }
+        account.recordTransaction(amount);
+        System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", -amount);
 
         clear();
         transactionList();
     }
 
     // MODIFIES: this
-    // EFFECTS: "clear" the screen by printing 10 newlines
+    // EFFECTS: record a deposit to the account
+    private void recordDeposit() {
+        double amount;
+        System.out.printf("+     NEW DEPOSIT     +%n");
+        System.out.printf("%n| Amount = $");
+        amount = input.nextFloat();
+        if (amount < 0.0) {
+            System.out.printf("Your deposit must be a value greater than 0!%n");
+            clear();
+            recordDeposit();
+        }
+        account.recordDeposit(amount);
+        System.out.printf("Your deposit of $%.2f has been recorded, enter a command to continue: ", amount);
+
+        clear();
+        transactionList();
+    }
+
+    // EFFECTS: simulates clearing the screen by printing 10 newlines
     private void clear() {
         int i = 10;
         while (i != 0) {

@@ -4,21 +4,21 @@ import java.util.Date;
 
 // Represents a Transaction, that contains the date of transaction, amount, and an optional category
 public class Transaction {
-    private int amount;
+    private double amount;
     private Date date;
     private String category;
 
-    public Transaction(int amount) {
+    public Transaction(double amount) {
         this.amount = amount;
         this.date = new Date();
     }
 
-    public Transaction(int amount, Date date) {
+    public Transaction(double amount, Date date) {
         this.amount = amount;
         this.date = date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -30,7 +30,7 @@ public class Transaction {
         return category;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -43,6 +43,6 @@ public class Transaction {
     }
 
     public boolean isDeposit() {
-        return (amount > 0);
+        return (amount > 0.0);
     }
 }

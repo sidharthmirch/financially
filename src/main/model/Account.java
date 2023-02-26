@@ -5,11 +5,11 @@ import java.util.List;
 
 // Represents an Account with a balance in dollars, a list of transactions, and a budget
 public class Account {
-    private int balance;
+    private double balance;
     private List<Transaction> transactionList;
     private Budget budget;
 
-    public Account(int openingBalance) {
+    public Account(double openingBalance) {
         transactionList = new ArrayList<>();
         budget = new Budget(openingBalance / 2);
         balance = openingBalance;
@@ -21,7 +21,7 @@ public class Account {
         balance = 0;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -36,7 +36,7 @@ public class Account {
     // REQUIRES: amount > 0
     // MODIFIES: this
     // EFFECTS: records a deposit to the account, adds to balance
-    public void recordDeposit(int amount) {
+    public void recordDeposit(double amount) {
         Transaction transaction = new Transaction(amount);
         transactionList.add(transaction);
         balance += transaction.getAmount();
@@ -45,7 +45,7 @@ public class Account {
     // REQUIRES: (amount > 0) && (amount < balance)
     // MODIFIES: this, budget
     // EFFECTS: records a transaction to the account and records it to the budget too
-    public void recordTransaction(int amount) {
+    public void recordTransaction(double amount) {
         Transaction transaction = new Transaction(-amount);
         transactionList.add(transaction);
         budget.recordTransaction(transaction);
@@ -53,8 +53,8 @@ public class Account {
     }
 
     // EFFECTS: returns summation of all transactions that are not deposits
-    public int getSpending() {
-        int spending = 0;
+    public double getSpending() {
+        double spending = 0;
         for (Transaction t: transactionList) {
             if (!t.isDeposit()) {
                 spending -= (t.getAmount());

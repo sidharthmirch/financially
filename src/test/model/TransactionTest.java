@@ -16,9 +16,9 @@ public class TransactionTest {
 
     @BeforeEach
     void runBefore() {
-        t1 = new Transaction(400, date);
-        t2 = new Transaction(-200, date);
-        t3 = new Transaction(500);
+        t1 = new Transaction(400.0, date);
+        t2 = new Transaction(-200.0, date);
+        t3 = new Transaction(500.0);
     }
 
     @Test
@@ -26,7 +26,7 @@ public class TransactionTest {
         assertEquals(400.0, t1.getAmount());
         assertEquals(-200.0, t2.getAmount());
         assertEquals(date, t1.getDate());
-        assertEquals(500, t3.getAmount());
+        assertEquals(500.0, t3.getAmount());
     }
 
     @Test
@@ -47,12 +47,12 @@ public class TransactionTest {
 
     @Test
     void testSetAmount() {
-        t1.setAmount(200);
-        assertEquals(200, t1.getAmount());
-        t2.setAmount(500);
-        assertEquals(500, t2.getAmount());
-        t1.setAmount(-300);
-        assertEquals(-300, t1.getAmount());
+        t1.setAmount(200.0);
+        assertEquals(200.0, t1.getAmount());
+        t2.setAmount(500.0);
+        assertEquals(500.0, t2.getAmount());
+        t1.setAmount(-300.0);
+        assertEquals(-300.0, t1.getAmount());
     }
 
     @Test

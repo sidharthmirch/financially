@@ -3,15 +3,15 @@ package model;
 // Represents a budget, that has a size, remaining in dollars, and an optional name
 public class Budget {
     private String name;
-    private int size;
-    private int remaining;
+    private double size;
+    private double remaining;
 
-    public Budget(int size) {
+    public Budget(double size) {
         this.size = size;
         remaining = size;
     }
 
-    public Budget(int size, String name) {
+    public Budget(double size, String name) {
         this.size = size;
         this.name = name;
         remaining = size;
@@ -21,11 +21,11 @@ public class Budget {
         return name;
     }
 
-    public int getSize() {
+    public double getSize() {
         return size;
     }
 
-    public int getRemaining() {
+    public double getRemaining() {
         return remaining;
     }
 
@@ -35,7 +35,7 @@ public class Budget {
 
     // MODIFIES: this
     // EFFECTS: sets new budget size, and updates remaining
-    public void setSize(int newSize, int currentSpend) {
+    public void setSize(double newSize, double currentSpend) {
         this.size = newSize;
         this.remaining = newSize - currentSpend;
     }
