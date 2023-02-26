@@ -40,13 +40,30 @@ public class BudgetApp {
     // MODIFIES: this
     // EFFECTS: initializes account and prints welcome message
     private void setup() {
-        // openingBalance and budget > 0 for testing
-        account = new Account(5000.0);
-        budget = account.getBudget();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         System.out.printf("Welcome to Financially.%n");
+        demo();
         commandList();
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: creates a new user account and budget for demo purposes
+    private void demo() {
+        double openingBalance;
+        double budgetSize;
+        System.out.println("Let's create a new account.");
+        System.out.printf("Please enter your opening balance: ");
+        openingBalance = input.nextDouble();
+        account = new Account(openingBalance);
+        System.out.printf("Great! Your account has been created with a balance of $%.2f.%n", account.getBalance());
+
+        System.out.println("Now let's create a budget.");
+        System.out.printf("Please set your budget size: ");
+        budgetSize = input.nextDouble();
+        budget = new Budget(budgetSize);
+        clear();
     }
 
     // MODIFIES: this
@@ -77,36 +94,39 @@ public class BudgetApp {
 
     // EFFECTS: display available commands to user
     private void commandList() {
-        System.out.printf("a - view your account%n");
-        System.out.printf("b - view your budget%n");
-        System.out.printf("d - record a deposit%n");
-        System.out.printf("r - record a new transaction%n");
-        System.out.printf("t - view all your transactions%n");
-        System.out.printf("h - view this menu again%n");
-        System.out.printf("q - quit the application%n");
+        System.out.printf("+           COMMANDS            +%n");
+        System.out.printf("+-------------------------------+%n");
+        System.out.printf("| a - view your account         |%n");
+        System.out.printf("| b - view your budget          |%n");
+        System.out.printf("| d - record a deposit          |%n");
+        System.out.printf("| r - record a new transaction  |%n");
+        System.out.printf("| t - view all your transactions|%n");
+        System.out.printf("| h - view this menu again      |%n");
+        System.out.printf("| q - quit the application      |%n");
+        System.out.printf("+-------------------------------+%n");
     }
 
     // EFFECTS: display user account information
     private void accountMenu() {
         System.out.printf("+       YOUR ACCOUNT     +%n");
         System.out.printf("+------------------------+%n");
-        System.out.printf("| Balance   | $%-2.2f   |%n", account.getBalance());
-        System.out.printf("| Budget    | $%-2.2f   |%n", budget.getSize());
-        System.out.printf("| Remaining | $%-2.2f   |%n", budget.getRemaining());
+        System.out.printf("| Balance   | $%-4.2f   |%n", account.getBalance());
+        System.out.printf("| Budget    | $%-4.2f   |%n", budget.getSize());
+        System.out.printf("| Remaining | $%-4.2f   |%n", budget.getRemaining());
         System.out.printf("+------------------------+%n");
     }
 
     // EFFECTS: display user budget information
     private void budgetMenu() {
         if (budget.getName() != null) {
-            System.out.printf("+      %-14s +%n", budget.getName().toUpperCase());
+            System.out.printf("+      %-16s +%n", budget.getName().toUpperCase());
         } else {
-            System.out.printf("+     YOUR BUDGET     +%n");
+            System.out.printf("+       YOUR BUDGET      +%n");
         }
         System.out.printf("+------------------------+%n");
-        System.out.printf("| Total     | $%-2.2f   |%n", budget.getSize());
-        System.out.printf("| Spent     | $%-2.2f   |%n", budget.getSize() - account.getSpending());
-        System.out.printf("| Remaining | $%-2.2f   |%n", budget.getRemaining());
+        System.out.printf("| Total     | $%-2.2f    |%n", budget.getSize());
+        System.out.printf("| Spent     | $%-2.2f    |%n", budget.getSize() - account.getSpending());
+        System.out.printf("| Remaining | $%-2.2f    |%n", budget.getRemaining());
         System.out.printf("+------------------------+%n");
 
         editBudget();
@@ -166,7 +186,7 @@ public class BudgetApp {
         double amount;
         System.out.printf("+   NEW TRANSACTION   +%n");
         System.out.printf("%n| Amount = $");
-        amount = input.nextFloat();
+        amount = input.nextDouble();
         if (amount > account.getBalance()) {
             System.out.printf("Your account balance is too low for this transaction!%n");
             accountMenu();
@@ -184,7 +204,7 @@ public class BudgetApp {
         double amount;
         System.out.printf("+     NEW DEPOSIT     +%n");
         System.out.printf("%n| Amount = $");
-        amount = input.nextFloat();
+        amount = input.nextDouble();
         if (amount < 0.0) {
             System.out.printf("Your deposit must be a value greater than 0!%n");
             clear();
