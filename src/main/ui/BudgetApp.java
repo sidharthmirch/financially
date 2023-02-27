@@ -23,6 +23,8 @@ public class BudgetApp {
         run();
     }
 
+    // MODIFIES: this
+    // EFFECTS: handles user input and keeps app running
     private void run() {
         String cmd;
         setup();
@@ -54,13 +56,13 @@ public class BudgetApp {
         double openingBalance;
         double budgetSize;
         System.out.println("Let's create a new account.");
-        System.out.printf("Please enter your opening balance: ");
+        System.out.print("Please enter your opening balance: ");
         openingBalance = input.nextDouble();
         account = new Account(openingBalance);
         System.out.printf("Great! Your account has been created with a balance of $%.2f.%n", account.getBalance());
 
         System.out.println("Now let's create a budget.");
-        System.out.printf("Please set your budget size: ");
+        System.out.print("Please set your budget size: ");
         budgetSize = input.nextDouble();
         budget = new Budget(budgetSize);
         clear();
@@ -112,7 +114,7 @@ public class BudgetApp {
         System.out.printf("+------------------------+%n");
         System.out.printf("| Balance   | $%-4.2f   |%n", account.getBalance());
         System.out.printf("| Budget    | $%-4.2f   |%n", budget.getSize());
-        System.out.printf("| Remaining | $%-4.2f   |%n", budget.getRemaining());
+        System.out.printf("| Remaining | $%-4.2f   |%n", budget.getSize() - account.getSpending());
         System.out.printf("+------------------------+%n");
     }
 
@@ -125,13 +127,15 @@ public class BudgetApp {
         }
         System.out.printf("+------------------------+%n");
         System.out.printf("| Total     | $%-2.2f    |%n", budget.getSize());
-        System.out.printf("| Spent     | $%-2.2f    |%n", budget.getSize() - account.getSpending());
-        System.out.printf("| Remaining | $%-2.2f    |%n", budget.getRemaining());
+        System.out.printf("| Spent     | $%-2.2f    |%n", account.getSpending());
+        System.out.printf("| Remaining | $%-2.2f    |%n", budget.getSize() - account.getSpending());
         System.out.printf("+------------------------+%n");
 
         editBudget();
     }
 
+    // MODIFIES: this
+    // EFFECTS: edit the size and name of the budget
     private void editBudget() {
         // force entry into loop for further input, with reference to TellerApp
         String cmd = "";
@@ -144,13 +148,13 @@ public class BudgetApp {
 
         if (cmd.equals("n")) {
             String name;
-            System.out.printf("Enter your new budget name: ");
+            System.out.print("Enter your new budget name: ");
             name = input.next();
             budget.setName(name);
             System.out.printf("Successfully renamed budget to \"%s\".%n", budget.getName());
         } else if (cmd.equals("s")) {
             double size;
-            System.out.printf("Enter your new budget size: ");
+            System.out.print("Enter your new budget size: ");
             size = input.nextInt();
             budget.setSize(size, account.getSpending());
             System.out.printf("Successfully changed budget to $%f.%n", budget.getSize());
@@ -192,7 +196,7 @@ public class BudgetApp {
             accountMenu();
         }
         account.recordTransaction(amount);
-        System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", -amount);
+        System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", amount);
 
         clear();
         transactionList();
