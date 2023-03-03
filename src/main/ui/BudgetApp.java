@@ -194,6 +194,7 @@ public class BudgetApp {
         if (amount > account.getBalance()) {
             System.out.printf("Your account balance is too low for this transaction!%n");
             accountMenu();
+            return;
         }
         account.recordTransaction(amount);
         System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", amount);
@@ -210,9 +211,10 @@ public class BudgetApp {
         System.out.printf("%n| Amount = $");
         amount = input.nextDouble();
         if (amount < 0.0) {
-            System.out.printf("Your deposit must be a value greater than 0!%n");
             clear();
+            System.out.printf("Your deposit must be a value greater than 0!%n");
             recordDeposit();
+            return;
         }
         account.recordDeposit(amount);
         System.out.printf("Your deposit of $%.2f has been recorded, enter a command to continue: ", amount);
