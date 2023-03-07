@@ -1,19 +1,23 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.Date;
+import java.time.Instant;
 
 // Represents a Transaction, that contains the date of transaction, amount, and an optional category
-public class Transaction {
+public class Transaction implements Writable {
     private double amount;
-    private Date date;
+    private Instant date;
     private String category;
 
     public Transaction(double amount) {
         this.amount = amount;
-        this.date = new Date();
+        this.date = Instant.now();
     }
 
-    public Transaction(double amount, Date date) {
+    public Transaction(double amount, Instant date) {
         this.amount = amount;
         this.date = date;
     }
@@ -22,7 +26,7 @@ public class Transaction {
         return amount;
     }
 
-    public Date getDate() {
+    public Instant getDate() {
         return date;
     }
 
@@ -34,7 +38,7 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
@@ -44,5 +48,14 @@ public class Transaction {
 
     public boolean isDeposit() {
         return (amount > 0.0);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("amount", amount);
+        json.put("date", date.toString());
+        json.put("category", category);
+        return json;
     }
 }

@@ -4,9 +4,14 @@ import model.Account;
 import model.Budget;
 import model.Transaction;
 
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
@@ -125,7 +130,7 @@ public class BudgetApp {
         } else {
             System.out.printf("+       YOUR BUDGET      +%n");
         }
-        System.out.printf("+------------------------+%n");
+        System.out.printf("+------------------------%n");
         System.out.printf("| Total     | $%-2.2f    |%n", budget.getSize());
         System.out.printf("| Spent     | $%-2.2f    |%n", account.getSpending());
         System.out.printf("| Remaining | $%-2.2f    |%n", budget.getSize() - account.getSpending());
@@ -157,7 +162,7 @@ public class BudgetApp {
             System.out.print("Enter your new budget size: ");
             size = input.nextInt();
             budget.setSize(size, account.getSpending());
-            System.out.printf("Successfully changed budget to $%f.%n", budget.getSize());
+            System.out.printf("Successfully changed budget to $%.2f.%n", budget.getSize());
         } else {
             commandList();
         }
@@ -165,20 +170,25 @@ public class BudgetApp {
 
     // EFFECTS: display all user transactions
     private void transactionList() {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        System.out.printf("+       USER TRANSACTIONS     +%n");
-        System.out.printf("+-----------------+-----------+%n");
-        System.out.printf("| Type | Amount   | Date      |%n");
-        System.out.printf("+------+----------------------+%n");
+        // Date formatting code inspiration from
+        // https://stackoverflow.com/a/27483371
+        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_LOCAL_DATE
+        DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
+                .withLocale(Locale.CANADA).withZone(ZoneId.systemDefault());
+        System.out.printf("+       USER TRANSACTIONS      +%n");
+        System.out.printf("+-----------------+------------+%n");
+        System.out.printf("| Type | Amount   | Date       |%n");
+        System.out.printf("+------+-----------------------+%n");
 
         // Table generation code inspiration from
         // https://stackoverflow.com/questions/15215326/how-can-i-create-table-using-ascii-in-a-console
         for (Transaction t : account.getTransactionList()) {
             double amount = t.getAmount();
-            Date date = t.getDate();
-            String formattedDate = dateFormat.format(date);
+            Instant date = t.getDate();
+            String formattedDate = formatter.format(date);
 
-            System.out.printf("|  %-4s| %-8s | %-6s |%n",
+            System.out.printf("|  %-4s| %-8s | %-5s |%n",
                     (t.isDeposit() ? "D" : "W"), "$" + abs(amount),
                     formattedDate);
         }
@@ -192,11 +202,12 @@ public class BudgetApp {
         System.out.printf("%n| Amount = $");
         amount = input.nextDouble();
         if (amount > account.getBalance()) {
-            System.out.printf("Your account balance is too low for this transaction!%n");
+            System.out.printf("Your account balance is too low to complete this transaction!%n");
             accountMenu();
             return;
         }
-        account.recordTransaction(amount);
+        Transaction transaction = new Transaction(-amount, Instant.now());
+        account.recordTransaction(transaction);
         System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", amount);
 
         clear();
@@ -216,7 +227,8 @@ public class BudgetApp {
             recordDeposit();
             return;
         }
-        account.recordDeposit(amount);
+        Transaction transaction = new Transaction(amount, Instant.now());
+        account.recordTransaction(transaction);
         System.out.printf("Your deposit of $%.2f has been recorded, enter a command to continue: ", amount);
 
         clear();

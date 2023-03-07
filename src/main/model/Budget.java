@@ -1,7 +1,11 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 // Represents a budget, that has a size, remaining in dollars, and an optional name
-public class Budget {
+public class Budget implements Writable {
     private String name;
     private double size;
     private double remaining;
@@ -29,6 +33,12 @@ public class Budget {
         return remaining;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets budget remaining - only used for loading JSON data
+    public void setRemaining(double remaining) {
+        this.remaining = remaining;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -46,5 +56,14 @@ public class Budget {
         if (!transaction.isDeposit()) {
             remaining += transaction.getAmount();
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("size", size);
+        json.put("remaining", remaining);
+        return json;
     }
 }

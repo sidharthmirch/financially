@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +12,7 @@ public class TransactionTest {
     private Transaction t1;
     private Transaction t2;
     private Transaction t3;
-    private Date date = new Date();
+    private Instant date = Instant.now();
 
 
     @BeforeEach
@@ -38,7 +39,7 @@ public class TransactionTest {
     @Test
     void testSetDate() {
         assertEquals(date, t1.getDate());
-        Date newDate = new Date();
+        Instant newDate = Instant.now();
         t1.setDate(newDate);
         assertEquals(newDate, t1.getDate());
         t3.setDate(newDate);

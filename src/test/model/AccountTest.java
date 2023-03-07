@@ -25,33 +25,43 @@ public class AccountTest {
         assertEquals(0.0, a2.getTransactionList().size());
     }
 
-    @Test
-    void testRecordDeposit() {
-        a1.recordDeposit(500.0);
-        assertEquals(500.0, a1.getBalance());
-        a1.recordDeposit(250.0);
-        assertEquals(750.0, a1.getBalance());
-        a2.recordDeposit(3500.0);
-        a2.recordDeposit(300.0);
-        assertEquals(8800.0, a2.getBalance());
-    }
+//    @Test
+//    void testRecordDeposit() {
+//        a1.recordDeposit(new Transaction(500.0));
+//        assertEquals(500.0, a1.getBalance());
+//        a1.recordDeposit(new Transaction(250.0));
+//        assertEquals(750.0, a1.getBalance());
+//        a2.recordDeposit(new Transaction(3500.0));
+//        a2.recordDeposit(new Transaction(300.0));
+//        assertEquals(8800.0, a2.getBalance());
+//    }
 
     @Test
     void testRecordTransaction() {
-        a2.recordTransaction(200.0);
-        assertEquals(4800.0, a2.getBalance());
-        a2.recordTransaction(300.0);
-        a2.recordTransaction(200.0);
-        assertEquals(4300.0, a2.getBalance());
+        // deposits
+        a1.recordTransaction(new Transaction(500.0));
+        assertEquals(500.0, a1.getBalance());
+        a1.recordTransaction(new Transaction(250.0));
+        assertEquals(750.0, a1.getBalance());
+        a2.recordTransaction(new Transaction(3500.0));
+        a2.recordTransaction(new Transaction(300.0));
+        assertEquals(8800.0, a2.getBalance());
+
+        // withdrawals
+        a2.recordTransaction(new Transaction(-200.0));
+        assertEquals(8600.0, a2.getBalance());
+        a2.recordTransaction(new Transaction(-300.0));
+        a2.recordTransaction(new Transaction(-200.0));
+        assertEquals(8100.0, a2.getBalance());
     }
 
     @Test
     void testGetSpending() {
-        a2.recordTransaction(200.0);
-        a2.recordTransaction(300.0);
+        a2.recordTransaction(new Transaction(-200.0));
+        a2.recordTransaction(new Transaction(-300.0));
         assertEquals(500.0, a2.getSpending());
-        a2.recordDeposit(500.0);
-        a2.recordTransaction(1000.0);
+        a2.recordTransaction(new Transaction(500.0));
+        a2.recordTransaction(new Transaction(-1000.0));
         assertEquals(1500.0, a2.getSpending());
     }
 }

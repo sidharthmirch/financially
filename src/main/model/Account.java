@@ -1,13 +1,17 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents an Account with a balance in dollars, a list of transactions, and a budget
-public class Account {
+public class Account implements Writable {
     private double balance;
-    private List<Transaction> transactionList;
     private Budget budget;
+    private List<Transaction> transactionList;
 
     public Account(double openingBalance) {
         transactionList = new ArrayList<>();
@@ -19,6 +23,12 @@ public class Account {
         transactionList = new ArrayList<>();
         budget = new Budget(0);
         balance = 0;
+    }
+
+    public Account(Budget budget, double balance) {
+        transactionList = new ArrayList<>();
+        this.budget = budget;
+        this.balance = balance;
     }
 
     public double getBalance() {
@@ -33,22 +43,13 @@ public class Account {
         return budget;
     }
 
-    // REQUIRES: amount > 0
-    // MODIFIES: this
-    // EFFECTS: records a deposit to the account, adds to balance
-    public void recordDeposit(double amount) {
-        Transaction transaction = new Transaction(amount);
-        transactionList.add(transaction);
-        balance += transaction.getAmount();
-    }
-
-    // REQUIRES: (amount > 0) && (amount < balance)
     // MODIFIES: this, budget
     // EFFECTS: records a transaction to the account and records it to the budget too
-    public void recordTransaction(double amount) {
-        Transaction transaction = new Transaction(-amount);
+    public void recordTransaction(Transaction transaction) {
+        if (!transaction.isDeposit()) {
+            budget.recordTransaction(transaction);
+        }
         transactionList.add(transaction);
-        budget.recordTransaction(transaction);
         balance += transaction.getAmount();
     }
 
@@ -62,4 +63,24 @@ public class Account {
         }
         return spending;
     }
+
+    // EFFECTS: creates a JSON object with save data
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("balance", balance);
+        json.put("budget", budget.toJson());
+        json.put("transactions", transactionsToJson());
+        return json;
+    }
+
+    // EFFECTS: creates a JSON array of transactionList
+    public JSONArray transactionsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Transaction t : transactionList) {
+            jsonArray.put(t.toJson());
+        }
+        return jsonArray;
+    }
+
 }
