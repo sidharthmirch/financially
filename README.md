@@ -13,3 +13,5 @@ As someone who is bad at budgeting and an impulse buyer, I believe that I am the
 - As a user, I want to be able to add a transaction (deposit/withdrawal) to my transaction list
 - As a user, I want to be able to see how much of my budget remains
 - As a user, I want to be able to see how much money I have
+- As a user, when I select the quit option, I want to be reminded to save the data from my current session to file and have the option to do so or not
+- As a user, when the application starts, I want to be given the option to load my account from file
