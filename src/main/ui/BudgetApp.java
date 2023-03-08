@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.CrashException;
 import model.Account;
 import model.Budget;
 import model.Transaction;
@@ -31,7 +30,7 @@ public class BudgetApp {
     private static final String JSON_STORE = "./data/user.json";
 
 
-    public BudgetApp() throws CrashException {
+    public BudgetApp() {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         run();
