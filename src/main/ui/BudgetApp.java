@@ -102,6 +102,7 @@ public class BudgetApp {
 
     // MODIFIES: this
     // EFFECTS: handle user input
+    @SuppressWarnings("methodlength")
     private void handleInput(String cmd) {
         clear();
         switch (cmd) {
