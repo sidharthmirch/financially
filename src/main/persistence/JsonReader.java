@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.json.*;
@@ -81,6 +83,7 @@ public class JsonReader {
     // MODIFIES: acc
     // EFFECTS: parses thingy from JSON object and adds it to Account
     private void addTransaction(Account acc, JSONObject jsonObject) {
+        List<Transaction> transactionList = new ArrayList<>();
         String category;
         double amount = jsonObject.getDouble("amount");
         String dateString = jsonObject.getString("date");
@@ -93,6 +96,6 @@ public class JsonReader {
         } catch (Exception e) {
             //
         }
-        acc.recordTransaction(transaction);
+        acc.loadTransaction(transaction);
     }
 }

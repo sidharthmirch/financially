@@ -43,6 +43,12 @@ public class Account implements Writable {
         return budget;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the account transaction list, used when loading save data
+    public void loadTransaction(Transaction transaction) {
+        this.transactionList.add(transaction);
+    }
+
     // MODIFIES: this, budget
     // EFFECTS: records a transaction to the account and records it to the budget too
     public void recordTransaction(Transaction transaction) {
