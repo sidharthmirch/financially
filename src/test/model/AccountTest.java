@@ -25,17 +25,6 @@ public class AccountTest {
         assertEquals(0.0, a2.getTransactionList().size());
     }
 
-//    @Test
-//    void testRecordDeposit() {
-//        a1.recordDeposit(new Transaction(500.0));
-//        assertEquals(500.0, a1.getBalance());
-//        a1.recordDeposit(new Transaction(250.0));
-//        assertEquals(750.0, a1.getBalance());
-//        a2.recordDeposit(new Transaction(3500.0));
-//        a2.recordDeposit(new Transaction(300.0));
-//        assertEquals(8800.0, a2.getBalance());
-//    }
-
     @Test
     void testRecordTransaction() {
         // deposits

@@ -50,15 +50,19 @@ public class JsonReader {
         return acc;
     }
 
+
     // MODIFIES: acc, budget
     // EFFECTS: parses Budget from JSON object and returns it
     private Budget parseBudget(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
+        String name;
         double size = jsonObject.getDouble("size");
         double remaining = jsonObject.getDouble("remaining");
         Budget budget = new Budget(size);
-        if (name.length() > 0) {
+        try {
+            name = jsonObject.getString("name");
             budget.setName(name);
+        } catch (Exception e) {
+            // NO NAME SET
         }
         budget.setRemaining(remaining);
         return budget;
@@ -77,13 +81,17 @@ public class JsonReader {
     // MODIFIES: acc
     // EFFECTS: parses thingy from JSON object and adds it to Account
     private void addTransaction(Account acc, JSONObject jsonObject) {
+        String category;
         double amount = jsonObject.getDouble("amount");
         String dateString = jsonObject.getString("date");
         Instant date = Instant.parse(dateString);
-        String category = jsonObject.getString("category");
+
         Transaction transaction = new Transaction(amount, date);
-        if (category.length() > 0) {
+        try {
+            category = jsonObject.getString("category");
             transaction.setCategory(category);
+        } catch (Exception e) {
+            //
         }
         acc.recordTransaction(transaction);
     }
