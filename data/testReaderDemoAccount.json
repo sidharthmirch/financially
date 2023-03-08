@@ -24,6 +24,7 @@
     }
   ],
   "budget": {
+    "name": "Demo budget",
     "size": 2000,
     "remaining": 1905
   }

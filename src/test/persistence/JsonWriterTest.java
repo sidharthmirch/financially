@@ -26,7 +26,7 @@ class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterEmptyWorkroom() {
+    void testWriterEmptyAccount() {
         try {
             Account acc = new Account(new Budget(0), 0);
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyAccount.json");
@@ -46,10 +46,11 @@ class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterGeneralWorkroom() {
+    void testWriterDemoAccount() {
         try {
             Account acc = new Account(new Budget(2000), 4500);
             acc.getBudget().setRemaining(1905);
+            acc.getBudget().setName("Demo budget");
             acc.loadTransaction(new Transaction(-20, Instant.parse("2023-03-07T23:52:19.326547Z")));
             acc.loadTransaction(new Transaction(-40, Instant.parse("2023-03-07T23:52:20.977080Z")));
             acc.loadTransaction(new Transaction(-20, Instant.parse("2023-03-07T23:52:23.196514Z")));
@@ -74,6 +75,7 @@ class JsonWriterTest extends JsonTest {
                     transactionList.get(4));
             assertEquals(2000, acc.getBudget().getSize());
             assertEquals(1905, acc.getBudget().getRemaining());
+            assertEquals("Demo budget", acc.getBudget().getName());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }

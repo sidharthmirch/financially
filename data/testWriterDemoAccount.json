@@ -25,6 +25,7 @@
     ],
     "budget": {
         "size": 2000,
+        "name": "Demo budget",
         "remaining": 1905
     }
 }

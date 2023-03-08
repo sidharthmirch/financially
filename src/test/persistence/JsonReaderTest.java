@@ -53,6 +53,7 @@ class JsonReaderTest extends JsonTest {
                     transactionList.get(4));
             assertEquals(2000, acc.getBudget().getSize());
             assertEquals(1905, acc.getBudget().getRemaining());
+            assertEquals("Demo budget", acc.getBudget().getName());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
