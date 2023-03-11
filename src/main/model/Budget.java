@@ -58,6 +58,7 @@ public class Budget implements Writable {
         }
     }
 
+    // EFFECTS: creates a JSON object with save data
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

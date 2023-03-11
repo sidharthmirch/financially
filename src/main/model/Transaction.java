@@ -50,6 +50,7 @@ public class Transaction implements Writable {
         return (amount > 0.0);
     }
 
+    // EFFECTS: creates a JSON object with save data
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
