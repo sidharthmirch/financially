@@ -23,8 +23,6 @@ public class TransactionsPanel extends JPanel {
 
     public TransactionsPanel(Account acc, String name) {
         this.name = name;
-        setBorder(BorderFactory.createEmptyBorder(200,200,200,200));
-        setLayout(new BorderLayout());
         this.account = acc;
         transactionList = account.getTransactionList();
         drawTable();

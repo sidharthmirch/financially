@@ -26,16 +26,24 @@ public class SavePanel extends JPanel {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         JButton saveButton = new JButton("Save");
+        JButton loadButton = new JButton("Load");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveAccount();
             }
         });
-        setBorder(BorderFactory.createEmptyBorder(200,200,200,200));
-        setLayout(new BorderLayout());
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadAccount();
+            }
+        });
+//        setBorder(BorderFactory.createEmptyBorder(200,200,200,200));
+//        setLayout(new BorderLayout());
         this.account = acc;
         this.add(saveButton);
+        this.add(loadButton);
     }
 
     // EFFECTS: saves the Account to file
@@ -68,6 +76,8 @@ public class SavePanel extends JPanel {
         try {
             account = jsonReader.read();
             System.out.println("Loaded your account with balance $" + account.getBalance() + " from " + JSON_STORE);
+            revalidate();
+            repaint();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }

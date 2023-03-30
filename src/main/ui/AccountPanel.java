@@ -15,8 +15,8 @@ public class AccountPanel extends JPanel {
 
     public AccountPanel(Account acc, String name) {
         this.name = name;
-        setBorder(BorderFactory.createEmptyBorder(200,200,200,200));
-        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(10,200,200,200));
+//        setLayout(new BorderLayout());
         this.account = acc;
         drawTable();
     }
@@ -24,8 +24,8 @@ public class AccountPanel extends JPanel {
     private void drawTable() {
         String[] columns = {"Balance", "Budget", "Remaining"};
         table = new JTable(generateTableData(), columns);
-        this.add(table, BorderLayout.CENTER);
         this.add(table.getTableHeader(), BorderLayout.NORTH);
+        this.add(table, BorderLayout.CENTER);
     }
 
     // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
