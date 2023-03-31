@@ -23,6 +23,8 @@ public class AccountPanel extends JPanel {
         drawTable(model);
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates account values and repaints panel to show new values
     public void updateAccount(Account acc) {
         this.account = acc;
         Object[][] rowData = generateTableData(account);
@@ -32,6 +34,8 @@ public class AccountPanel extends JPanel {
         repaint();
     }
 
+    // MODIFIES: this
+    // EFFECTS: draw JTable to this panel
     private void drawTable(AccountTableModel model) {
         table = new JTable(model);
         JScrollPane container = new JScrollPane(table);
@@ -39,6 +43,7 @@ public class AccountPanel extends JPanel {
         this.add(container, BorderLayout.CENTER);
     }
 
+    // EFFECTS: generates table row data for JTable
     // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
     private Object[][] generateTableData(Account acc) {
         Budget budget = acc.getBudget();

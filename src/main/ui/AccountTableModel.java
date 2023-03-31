@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.table.DefaultTableModel;
 
+// JTable model for AccountPanel
 public class AccountTableModel extends DefaultTableModel {
 
     private static String[] columnNames = {"Balance", "Budget", "Remaining"};

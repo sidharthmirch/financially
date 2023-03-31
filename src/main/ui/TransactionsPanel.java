@@ -68,12 +68,16 @@ public class TransactionsPanel extends JPanel {
         this.add(tableDisplaySelection);
     }
 
+    // MODIFIES: this
+    // EFFECTS: draw JTable to this panel, inside a JScrollPane so we can scroll for n long list
     private void drawTable(TransactionTableModel model) {
         table = new JTable(model);
         JScrollPane container = new JScrollPane(table);
         this.add(container, BorderLayout.CENTER);
     }
 
+    // MODIFIES: this, this.account
+    // EFFECTS: updates account values and repaints table to with new values
     public void updateTable(Account acc, String displayOption) {
         this.account = acc;
         Object[][] rowData = generateTableData(filterTransactions(account.getTransactionList(), displayOption));
@@ -84,6 +88,9 @@ public class TransactionsPanel extends JPanel {
         repaint();
     }
 
+
+    // MODIFIES: this, this.account
+    // EFFECTS: updates account values and repaints table to with new values
     // Default no option: render all
     public void updateTable(Account acc) {
         this.account = acc;
@@ -95,6 +102,7 @@ public class TransactionsPanel extends JPanel {
         repaint();
     }
 
+    // EFFECTS: returns filtered transaction list based on given display option
     private List<Transaction> filterTransactions(List<Transaction> originalList, String displayOption) {
         List<Transaction> filtered;
         switch (displayOption) {
@@ -111,11 +119,15 @@ public class TransactionsPanel extends JPanel {
         return filtered;
     }
 
+
+    // MODIFIES: this, this.account
+    // EFFECTS: adds transaction to account then triggers repaint of table
     public void addTransaction(Transaction t) {
         this.account.recordTransaction(t);
         updateTable(this.account);
     }
 
+    // EFFECTS: generates table row data for JTable
     // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
     private Object[][] generateTableData(List<Transaction> transactionList) {
         // Date formatting code inspiration from
@@ -138,7 +150,7 @@ public class TransactionsPanel extends JPanel {
         return data;
     }
 
-    // MODIFIES: this
+    // MODIFIES: this.account
     // EFFECTS: record a transaction to the account
     private void recordTransaction(boolean isDeposit) {
 

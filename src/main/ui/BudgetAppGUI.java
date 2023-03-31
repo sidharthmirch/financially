@@ -2,7 +2,6 @@ package ui;
 
 
 import model.Account;
-import model.Budget;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -25,9 +24,7 @@ public class BudgetAppGUI {
     private JMenuBar menuBar;
     private JPanel mainPanel;
     private AccountPanel accountPanel;
-    private JPanel budgetPanel;
     private TransactionsPanel transactionsPanel;
-    private JPanel savePanel;
 
     private CardLayout layout = new CardLayout(0,0);
 
@@ -46,7 +43,8 @@ public class BudgetAppGUI {
     }
 
 
-
+    // MODIFIES: this
+    // EFFECTS: initializes accounts and frame
     private void setup() {
         splashScreen();
         // Demo account balance = 2000. Feel free to load account from ./data
@@ -72,6 +70,8 @@ public class BudgetAppGUI {
         frame.pack();
     }
 
+    // MODIFIES: this
+    // EFFECTS: display splashscreen for 6s and then dispose of it
     private void splashScreen() {
         JWindow window = new JWindow();
         ImageIcon splashImage = new ImageIcon("./data/splashscreen.png");
@@ -90,6 +90,8 @@ public class BudgetAppGUI {
         window.dispose();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initialize JMenuBar
     @SuppressWarnings("methodlength")
     private void setupMenuBar() {
         JMenu accountMenu = new JMenu("Account");
@@ -134,6 +136,7 @@ public class BudgetAppGUI {
         frame.setJMenuBar(menuBar);
     }
 
+    // EFFECTS: handles JMenuBar interactions and switches content panel
     private MenuListener handleMenuClick(String name) {
         CardLayout cardLayout = (CardLayout)(mainPanel.getLayout());
         MenuListener handleClick = new MenuListener() {

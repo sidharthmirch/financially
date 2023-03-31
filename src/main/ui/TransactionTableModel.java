@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.table.DefaultTableModel;
 
+// JTable model for TransactionPanel
 public class TransactionTableModel extends DefaultTableModel {
 
     private static String[] columnNames = {"Type", "Amount", "Date"};
