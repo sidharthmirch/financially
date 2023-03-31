@@ -75,9 +75,8 @@ public class SavePanel extends JPanel {
     private void loadAccount() {
         try {
             account = jsonReader.read();
+            this.getParent().repaint();
             System.out.println("Loaded your account with balance $" + account.getBalance() + " from " + JSON_STORE);
-            revalidate();
-            repaint();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }

@@ -4,39 +4,120 @@ import model.Account;
 import model.Transaction;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class TransactionsPanel extends JPanel {
 
     public final String name;
 
     private Account account;
-    private List<Transaction> transactionList;
+    private AccountPanel ap;
+
     private JTable table;
 
-    public TransactionsPanel(Account acc, String name) {
+    private JButton depositBtn = new JButton("Record deposit");
+    private JButton withdrawalBtn  = new JButton("Record transaction");
+
+    String[] displayOptions = {"All", "Withdrawals", "Deposits"};
+    private JComboBox<String> tableDisplaySelection = new JComboBox<>(displayOptions);
+
+    @SuppressWarnings("methodlength")
+    public TransactionsPanel(Account acc, String name, AccountPanel ap) {
         this.name = name;
         this.account = acc;
-        transactionList = account.getTransactionList();
-        drawTable();
+        this.ap = ap;
+        Object[][] rowData = generateTableData(account.getTransactionList());
+        TransactionTableModel model = new TransactionTableModel(rowData);
+        drawTable(model);
+        depositBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                recordTransaction(true);
+            }
+        });
+        withdrawalBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                recordTransaction(false);
+            }
+        });
+        tableDisplaySelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
+                String displayOption = (String) comboBox.getSelectedItem();
+                updateTable(account, displayOption);
+            }
+        });
+
+        this.add(depositBtn);
+        this.add(withdrawalBtn);
+        this.add(new JLabel("Display options"));
+        this.add(tableDisplaySelection);
     }
 
-    private void drawTable() {
-        String[] columns = {"Type", "Amount", "Date"};
-        table = new JTable(generateTableData(), columns);
+    private void drawTable(TransactionTableModel model) {
+        table = new JTable(model);
         JScrollPane container = new JScrollPane(table);
         this.add(container, BorderLayout.CENTER);
     }
 
+    public void updateTable(Account acc, String displayOption) {
+        this.account = acc;
+        Object[][] rowData = generateTableData(filterTransactions(account.getTransactionList(), displayOption));
+        TransactionTableModel model = new TransactionTableModel(rowData);
+        table.setModel(model);
+        ap.updateAccount(acc);
+        revalidate();
+        repaint();
+    }
+
+    // Default no option: render all
+    public void updateTable(Account acc) {
+        this.account = acc;
+        Object[][] rowData = generateTableData(account.getTransactionList());
+        TransactionTableModel model = new TransactionTableModel(rowData);
+        table.setModel(model);
+        ap.updateAccount(acc);
+        revalidate();
+        repaint();
+    }
+
+    private List<Transaction> filterTransactions(List<Transaction> originalList, String displayOption) {
+        List<Transaction> filtered;
+        switch (displayOption) {
+            case "Withdrawals":
+                filtered = originalList.stream().filter(t -> !t.isDeposit()).collect(Collectors.toList());
+                break;
+            case "Deposits":
+                filtered = originalList.stream().filter(t -> t.isDeposit()).collect(Collectors.toList());
+                break;
+            default:
+                filtered = originalList;
+                break;
+        }
+        return filtered;
+    }
+
+    public void addTransaction(Transaction t) {
+        this.account.recordTransaction(t);
+        updateTable(this.account);
+    }
+
     // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
-    private Object[][] generateTableData() {
+    private Object[][] generateTableData(List<Transaction> transactionList) {
         // Date formatting code inspiration from
         // https://stackoverflow.com/a/27483371
         // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_LOCAL_DATE
@@ -44,46 +125,51 @@ public class TransactionsPanel extends JPanel {
         formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
                 .withLocale(Locale.CANADA).withZone(ZoneId.systemDefault());
 
-        // Table data generation code guided by java docs
-        // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
+
         Object[][] data = new Object[transactionList.size()][3];
+
         for (int i = 0; i < transactionList.size(); i++) {
-            Instant date = transactionList.get(i).getDate();
-            String formattedDate = formatter.format(date);
-            // Setting 3 variables from Transaction for use in JTable
-            if (transactionList.get(i).isDeposit()) {
-                data[i][0] = "D";
-            } else {
-                data[i][0] = "W";
-            }
-            data[i][1] = "$" + Math.abs(transactionList.get(i).getAmount());
-            data[i][2] = formattedDate;
+            Transaction t = transactionList.get(i);
+            data[i][0] = (t.isDeposit() ? "D" : "W");
+            data[i][1] = (t.isDeposit() ? t.getAmount() : Math.abs(t.getAmount()));
+            data[i][2] = formatter.format(t.getDate());
         }
+
         return data;
     }
 
     // MODIFIES: this
     // EFFECTS: record a transaction to the account
-    private void recordTransaction() {
-        double amount;
-        JTextField inputAmount = new JTextField(9);
-        //= Float.parseFloat(inputAmount.getText());
+    private void recordTransaction(boolean isDeposit) {
 
-//        double amount;
-//        System.out.printf("+   NEW TRANSACTION   +%n");
-//        System.out.printf("%n| Amount = $");
-//        amount = input.nextDouble();
-//        if (amount > account.getBalance()) {
-//            System.out.printf("Your account balance is too low to complete this transaction!%n");
-//            accountMenu();
-//            return;
-//        }
-//        Transaction transaction = new Transaction(-amount, Instant.now());
-//        account.recordTransaction(transaction);
-//        System.out.printf("Your transaction of $%.2f has been recorded, enter a command to continue: ", amount);
-//
-//        clear();
-//        transactionList();
+        String input;
+        double amount;
+
+        if (isDeposit) {
+            input = JOptionPane.showInputDialog(this,
+                    "Enter deposit amount",
+                    "$ 0.00");
+        } else {
+            input = JOptionPane.showInputDialog(this,
+                    "Enter withdrawal amount",
+                    "$ 0.00");
+        }
+
+        // check if input is valid
+        try {
+            amount = Double.parseDouble(input);
+            if (!isDeposit) {
+                amount = -amount;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid input! Try a number such as 42.50 or 30");
+            return;
+        }
+
+        Transaction t = new Transaction(amount);
+        addTransaction(t);
+
     }
 
 }

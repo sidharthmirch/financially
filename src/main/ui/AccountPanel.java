@@ -15,24 +15,35 @@ public class AccountPanel extends JPanel {
 
     public AccountPanel(Account acc, String name) {
         this.name = name;
-        setBorder(BorderFactory.createEmptyBorder(10,200,200,200));
+        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 //        setLayout(new BorderLayout());
         this.account = acc;
-        drawTable();
+        Object[][] rowData = generateTableData(account);
+        AccountTableModel model = new AccountTableModel(rowData);
+        drawTable(model);
     }
 
-    private void drawTable() {
-        String[] columns = {"Balance", "Budget", "Remaining"};
-        table = new JTable(generateTableData(), columns);
-        this.add(table.getTableHeader(), BorderLayout.NORTH);
-        this.add(table, BorderLayout.CENTER);
+    public void updateAccount(Account acc) {
+        this.account = acc;
+        Object[][] rowData = generateTableData(account);
+        AccountTableModel model = new AccountTableModel(rowData);
+        table.setModel(model);
+        revalidate();
+        repaint();
+    }
+
+    private void drawTable(AccountTableModel model) {
+        table = new JTable(model);
+        JScrollPane container = new JScrollPane(table);
+        // this.add(table.getTableHeader(), BorderLayout.NORTH);
+        this.add(container, BorderLayout.CENTER);
     }
 
     // https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
-    private Object[][] generateTableData() {
-        Budget budget = account.getBudget();
+    private Object[][] generateTableData(Account acc) {
+        Budget budget = acc.getBudget();
         Object[][] data = new Object[1][3];
-        data[0][0] = "$" + account.getBalance();
+        data[0][0] = "$" + acc.getBalance();
         data[0][1] = "$" + budget.getSize();
         data[0][2] = "$" + budget.getRemaining();
         return data;

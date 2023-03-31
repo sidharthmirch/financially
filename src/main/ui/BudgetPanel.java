@@ -4,6 +4,10 @@ import model.Account;
 import model.Budget;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,7 +48,10 @@ public class BudgetPanel extends JPanel {
         return data;
     }
 
+    @SuppressWarnings("methodlength")
     private void setupButtons() {
+        String[] columns = {"Total", "Spent", "Remaining"};
+        Budget budget = account.getBudget();
         editSizeBtn = new JButton("Edit budget size");
         editSizeBtn.addActionListener(new ActionListener() {
             @Override
@@ -52,7 +59,10 @@ public class BudgetPanel extends JPanel {
                 double newSize = Float.parseFloat(JOptionPane.showInputDialog("Enter your new budget size"));
 
                 if (newSize > 0.0) {
-                    account.getBudget().setSize(newSize, account.getSpending());
+                    budget.setSize(newSize, account.getSpending());
+                    table = new JTable(generateTableData(), columns);
+                    repaint();
+                    revalidate();
                 }
                 System.out.println(account.getBudget().getSize());
             }
