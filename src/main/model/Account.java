@@ -47,6 +47,8 @@ public class Account implements Writable {
     // EFFECTS: sets the account transaction list, used when loading save data
     public void loadTransaction(Transaction transaction) {
         this.transactionList.add(transaction);
+        EventLog.getInstance().logEvent(new Event("Transaction loaded from save: $" + transaction.getAmount()
+                + " TYPE: " + (transaction.isDeposit() ? "DEPOSIT" : "WITHDRAWAL")));
     }
 
     // MODIFIES: this, budget
@@ -57,6 +59,9 @@ public class Account implements Writable {
         }
         transactionList.add(transaction);
         balance += transaction.getAmount();
+
+        EventLog.getInstance().logEvent(new Event("Transaction recorded: $" + transaction.getAmount()
+                + " TYPE: " + (transaction.isDeposit() ? "DEPOSIT" : "WITHDRAWAL")));
     }
 
     // EFFECTS: returns summation of all transactions that are not deposits

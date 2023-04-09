@@ -83,7 +83,6 @@ public class JsonReader {
     // MODIFIES: acc
     // EFFECTS: parses thingy from JSON object and adds it to Account
     private void addTransaction(Account acc, JSONObject jsonObject) {
-        List<Transaction> transactionList = new ArrayList<>();
         String category;
         double amount = jsonObject.getDouble("amount");
         String dateString = jsonObject.getString("date");

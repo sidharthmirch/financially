@@ -3,7 +3,6 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.Date;
 import java.time.Instant;
 
 // Represents a Transaction, that contains the date of transaction, amount, and an optional category

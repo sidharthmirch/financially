@@ -2,6 +2,8 @@ package ui;
 
 
 import model.Account;
+import model.Event;
+import model.EventLog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -36,6 +38,21 @@ public class BudgetAppGUI {
     public BudgetAppGUI() {
         frame = new JFrame("Financially");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            // https://stackoverflow.com/a/9093526/13195842
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Are you sure you want to quit?", "Quit",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                            for (Event e: EventLog.getInstance()) {
+                                System.out.println(e.toString());
+                            }
+                            System.exit(0);
+                        }
+            }
+        });
         setup();
         setupMenuBar();
         centreFrame();
@@ -56,16 +73,11 @@ public class BudgetAppGUI {
         frame.getContentPane().add(mainPanel, "parent");
         mainPanel.setLayout(layout);
 
-
         accountPanel = new AccountPanel(account, "account");
-//        budgetPanel = new BudgetPanel(account, "budget");
         transactionsPanel = new TransactionsPanel(account, "transactions", accountPanel);
-//        savePanel = new SavePanel(account, "save");
 
         mainPanel.add(accountPanel, "account");
-//        mainPanel.add(budgetPanel, "budget");
         mainPanel.add(transactionsPanel, "transactions");
-//        mainPanel.add(savePanel, "save");
 
         frame.pack();
     }
@@ -81,7 +93,7 @@ public class BudgetAppGUI {
         window.setVisible(true);
 
         try {
-            Thread.sleep(6000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -97,11 +109,6 @@ public class BudgetAppGUI {
         JMenu accountMenu = new JMenu("Account");
         accountMenu.setActionCommand("account");
         accountMenu.addMenuListener(handleMenuClick("account"));
-
-
-//        JMenu budgetMenu = new JMenu("Budget");
-//        budgetMenu.setActionCommand("budget");
-//        budgetMenu.addMenuListener(handleMenuClick("budget"));
 
         JMenu transactionsMenu = new JMenu("Transactions");
         transactionsMenu.setActionCommand("transactions");
@@ -129,7 +136,6 @@ public class BudgetAppGUI {
         menuBar = new JMenuBar();
 
         menuBar.add(accountMenu);
-        // menuBar.add(budgetMenu);
         menuBar.add(transactionsMenu);
         menuBar.add(optionsMenu);
 
@@ -170,7 +176,6 @@ public class BudgetAppGUI {
                     "Saved your account with balance $" + account.getBalance() + " to " + JSON_STORE,
                     "Account saved",
                     JOptionPane.OK_OPTION);
-            System.out.println("Saved your account with balance $" + account.getBalance() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
@@ -186,7 +191,6 @@ public class BudgetAppGUI {
                     "Loaded your account with balance $" + account.getBalance() + " from " + JSON_STORE,
                     "Account loaded",
                     JOptionPane.OK_OPTION);
-            System.out.println("Loaded your account with balance $" + account.getBalance() + " from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }

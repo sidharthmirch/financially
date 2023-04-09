@@ -103,6 +103,7 @@ public class TransactionsPanel extends JPanel {
     }
 
     // EFFECTS: returns filtered transaction list based on given display option
+    // https://www.baeldung.com/java-stream-filter-lambda
     private List<Transaction> filterTransactions(List<Transaction> originalList, String displayOption) {
         List<Transaction> filtered;
         switch (displayOption) {
