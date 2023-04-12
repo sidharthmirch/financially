@@ -6,17 +6,13 @@ import model.Transaction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class TransactionsPanel extends JPanel {
 
@@ -80,7 +76,7 @@ public class TransactionsPanel extends JPanel {
     // EFFECTS: updates account values and repaints table to with new values
     public void updateTable(Account acc, String displayOption) {
         this.account = acc;
-        Object[][] rowData = generateTableData(filterTransactions(account.getTransactionList(), displayOption));
+        Object[][] rowData = generateTableData(account.filterTransactions(displayOption));
         TransactionTableModel model = new TransactionTableModel(rowData);
         table.setModel(model);
         ap.updateAccount(acc);
@@ -102,23 +98,23 @@ public class TransactionsPanel extends JPanel {
         repaint();
     }
 
-    // EFFECTS: returns filtered transaction list based on given display option
-    // https://www.baeldung.com/java-stream-filter-lambda
-    private List<Transaction> filterTransactions(List<Transaction> originalList, String displayOption) {
-        List<Transaction> filtered;
-        switch (displayOption) {
-            case "Withdrawals":
-                filtered = originalList.stream().filter(t -> !t.isDeposit()).collect(Collectors.toList());
-                break;
-            case "Deposits":
-                filtered = originalList.stream().filter(t -> t.isDeposit()).collect(Collectors.toList());
-                break;
-            default:
-                filtered = originalList;
-                break;
-        }
-        return filtered;
-    }
+//    // EFFECTS: returns filtered transaction list based on given display option
+//    // https://www.baeldung.com/java-stream-filter-lambda
+//    private List<Transaction> filterTransactions(List<Transaction> originalList, String displayOption) {
+//        List<Transaction> filtered;
+//        switch (displayOption) {
+//            case "Withdrawals":
+//                filtered = originalList.stream().filter(t -> !t.isDeposit()).collect(Collectors.toList());
+//                break;
+//            case "Deposits":
+//                filtered = originalList.stream().filter(t -> t.isDeposit()).collect(Collectors.toList());
+//                break;
+//            default:
+//                filtered = originalList;
+//                break;
+//        }
+//        return filtered;
+//    }
 
 
     // MODIFIES: this, this.account

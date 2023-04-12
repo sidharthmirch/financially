@@ -6,6 +6,7 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // Represents an Account with a balance in dollars, a list of transactions, and a budget
 public class Account implements Writable {
@@ -41,6 +42,24 @@ public class Account implements Writable {
 
     public Budget getBudget() {
         return budget;
+    }
+
+    // EFFECTS: returns filtered transaction list based on given display option
+    // https://www.baeldung.com/java-stream-filter-lambda
+    public List<Transaction> filterTransactions(String displayOption) {
+        List<Transaction> filtered;
+        switch (displayOption) {
+            case "Withdrawals":
+                filtered = transactionList.stream().filter(t -> !t.isDeposit()).collect(Collectors.toList());
+                break;
+            case "Deposits":
+                filtered = transactionList.stream().filter(t -> t.isDeposit()).collect(Collectors.toList());
+                break;
+            default:
+                filtered = transactionList;
+                break;
+        }
+        return filtered;
     }
 
     // MODIFIES: this
