@@ -76,7 +76,7 @@ public class TransactionsPanel extends JPanel {
     // EFFECTS: updates account values and repaints table to with new values
     public void updateTable(Account acc, String displayOption) {
         this.account = acc;
-        Object[][] rowData = generateTableData(account.filterTransactions(displayOption));
+        Object[][] rowData = generateTableData(account.getFilteredTransactions(displayOption));
         TransactionTableModel model = new TransactionTableModel(rowData);
         table.setModel(model);
         ap.updateAccount(acc);

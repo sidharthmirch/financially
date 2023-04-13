@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountTest {
@@ -52,5 +55,26 @@ public class AccountTest {
         a2.recordTransaction(new Transaction(500.0));
         a2.recordTransaction(new Transaction(-1000.0));
         assertEquals(1500.0, a2.getSpending());
+    }
+
+    @Test
+    void testFilterTransaction() {
+        List<Transaction> unfiltered = new ArrayList<>();
+        List<Transaction> deposits = new ArrayList<>();
+        List<Transaction> withdrawals = new ArrayList<>();
+
+        Transaction deposit = new Transaction(500);
+        Transaction withdrawal = new Transaction(-100);
+
+        unfiltered.add(deposit);
+        unfiltered.add(withdrawal);
+        deposits.add(deposit);
+        withdrawals.add(withdrawal);
+        a1.recordTransaction(deposit);
+        a1.recordTransaction(withdrawal);
+
+        assertEquals(unfiltered, a1.getFilteredTransactions(""));
+        assertEquals(deposits, a1.getFilteredTransactions("Deposits"));
+        assertEquals(withdrawals, a1.getFilteredTransactions("Withdrawals"));
     }
 }

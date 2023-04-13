@@ -46,7 +46,7 @@ public class Account implements Writable {
 
     // EFFECTS: returns filtered transaction list based on given display option
     // https://www.baeldung.com/java-stream-filter-lambda
-    public List<Transaction> filterTransactions(String displayOption) {
+    public List<Transaction> getFilteredTransactions(String displayOption) {
         List<Transaction> filtered;
         switch (displayOption) {
             case "Withdrawals":
