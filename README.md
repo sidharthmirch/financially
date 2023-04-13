@@ -24,3 +24,21 @@ As someone who is bad at budgeting and an impulse buyer, I believe that I am the
 - You can locate my visual component by loading the application. My visual component was my splashscreen.
 - You can save the state of my application by hovering over the "Options" menu item, and then selecting "Save". 
 - You can reload the state of my application by hovering over the "Options" menu item, and then selecting "Load". 
+
+## Phase 4: Task 2
+```
+Wed Apr 12 18:02:45 PDT 2023
+Transaction recorded: $50.0 TYPE: DEPOSIT
+Wed Apr 12 18:02:50 PDT 2023
+Transaction recorded: $-29.0 TYPE: WITHDRAWAL
+Wed Apr 12 18:02:52 PDT 2023
+Transaction recorded: $-30.0 TYPE: WITHDRAWAL
+Wed Apr 12 18:02:55 PDT 2023
+Transactions filtered: DEPOSITS now displayed
+Wed Apr 12 18:02:58 PDT 2023
+Transaction recorded: $-50.0 TYPE: WITHDRAWAL
+Wed Apr 12 18:03:01 PDT 2023
+Transactions filtered: WITHDRAWALS now displayed
+Wed Apr 12 18:03:04 PDT 2023
+Transactions filtered: ALL now displayed
+```

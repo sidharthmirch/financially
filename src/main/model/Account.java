@@ -56,9 +56,14 @@ public class Account implements Writable {
                 filtered = transactionList.stream().filter(t -> t.isDeposit()).collect(Collectors.toList());
                 break;
             default:
+                // display all
                 filtered = transactionList;
                 break;
         }
+
+        EventLog.getInstance().logEvent(new Event("Transactions filtered: " + displayOption.toUpperCase()
+                + " now displayed"));
+
         return filtered;
     }
 
@@ -66,8 +71,6 @@ public class Account implements Writable {
     // EFFECTS: sets the account transaction list, used when loading save data
     public void loadTransaction(Transaction transaction) {
         this.transactionList.add(transaction);
-        EventLog.getInstance().logEvent(new Event("Transaction loaded from save: $" + transaction.getAmount()
-                + " TYPE: " + (transaction.isDeposit() ? "DEPOSIT" : "WITHDRAWAL")));
     }
 
     // MODIFIES: this, budget
