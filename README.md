@@ -42,3 +42,13 @@ Transactions filtered: WITHDRAWALS now displayed
 Wed Apr 12 18:03:04 PDT 2023
 Transactions filtered: ALL now displayed
 ```
+
+## Phase 4: Task 3
+![UML Diagram](./UML_Design_Diagram.png)
+If you compare the Account and Budget classes, you would notice that a Budget is essentially a type of Account that cannot withdraw 
+(with some special budget related fields added). To refactor my code I think that I would create a new superclass of Account that had the
+ability to store funds only. Then Account and Budget would extend these classes and add only the class specific functionality to each.
+By doing this I would be able to avoid a lot of the duplication of code and only where I have a function like recordTransaction()
+which is different in the case of an Account and Budget, I would use an `@Override` tag and then write the implementation needed.
+Furthermore, my table models could have also been simplified as they were essentially the same, with the only difference being the stored column names, 
+which I could have passed in to a more generalized table model at instantiation.

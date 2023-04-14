@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 // Starts console app
 public class Main {
     public static void main(String[] args) {
-        new BudgetApp();
+        new BudgetAppGUI();
+        // Console UI
+        // new BudgetApp();
     }
 }
