@@ -24,7 +24,7 @@ public class TransactionsPanel extends JPanel {
     private JTable table;
 
     private JButton depositBtn = new JButton("Record deposit");
-    private JButton withdrawalBtn  = new JButton("Record transaction");
+    private JButton withdrawalBtn  = new JButton("Record withdrawal");
 
     String[] displayOptions = {"All", "Withdrawals", "Deposits"};
     private JComboBox<String> tableDisplaySelection = new JComboBox<>(displayOptions);
